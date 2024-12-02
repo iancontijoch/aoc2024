@@ -12,10 +12,12 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 def is_safe(lst) -> bool:
     return (
-        all(((a < b) and (b - a  in range(1, 4))) 
+        all((a < b) and (b - a  in range(1, 4))
             for a, b in zip(lst, lst[1:])
-        ) or all((a > b) and (a - b in range(1, 4)) 
-                 for a, b in zip(lst, lst[1:]))
+        ) 
+        or 
+        all((a > b) and (a - b in range(1, 4)) 
+            for a, b in zip(lst, lst[1:]))
     )
 
 def is_fixable(lst) -> bool:
