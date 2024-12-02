@@ -15,16 +15,10 @@ def compute(s: str) -> int:
     lines = s.splitlines()
     for line in lines:
         report = list(map(int, line.split()))
-        if (
-            all((a < b) and (b - a  >= 1 and b - a <= 3) 
-                for a, b in zip(report, report[1:]))
-            or
-            all((a > b) and (a - b  >= 1 and a - b <= 3) 
-                for a, b in zip(report, report[1:]))
-        ):
-            safe += 1
-            
-        
+        safe += all(
+            ((a < b) and (b - a  >= 1 and b - a <= 3))
+            or ((a > b) and (a - b  >= 1 and a - b <= 3))
+            for a, b in zip(report, report[1:])) 
     return safe
 
 
