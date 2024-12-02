@@ -18,7 +18,7 @@ def compute(s: str) -> int:
         left_lst.append(int(left))
         right_lst.append(int(right))
     
-    return sum(abs(r - l) for l, r in zip(sorted(left_lst), sorted(right_lst)))
+    return sum(l * right_lst.count(l) for l in left_lst)
 
 
 INPUT_S = '''\
@@ -29,7 +29,7 @@ INPUT_S = '''\
 3   9
 3   3
 '''
-EXPECTED = 11
+EXPECTED = 31
 
 
 @pytest.mark.parametrize(
