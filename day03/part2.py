@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import math
 import os.path
 import re
-import math
 
 import pytest
 
@@ -17,13 +17,13 @@ def compute(s: str) -> int:
     total = 0
     enabled = True
     for line in lines:
-        dos = [(m.span()[0], 'do') 
+        dos = [(m.span()[0], 'do', 0)
                for m in re.finditer(r'do\(\)', line)]
-        donts = [(m.span()[0], 'dont') 
+        donts = [(m.span()[0], 'dont', 0)
                  for m in re.finditer(r'don\'t\(\)', line)]
-        mults = [(m.span()[0], 'mult', math.prod(map(int, m.groups()))) 
+        mults = [(m.span()[0], 'mult', math.prod(map(int, m.groups())))
                  for m in re.finditer(r'mul\((\d+),(\d+)\)', line)]
-        
+
         markers = sorted(dos + donts + mults)
         for m in markers:
             if m[1] == 'dont':
@@ -32,7 +32,7 @@ def compute(s: str) -> int:
                 enabled = True
             if m[1] == 'mult':
                 total += enabled * m[2]
-                
+
     return total
 
 

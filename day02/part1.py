@@ -11,14 +11,15 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def compute(s: str) -> int:
-    safe = 0 
+    safe = 0
     lines = s.splitlines()
     for line in lines:
         report = list(map(int, line.split()))
         safe += all(
-            ((a < b) and (b - a  >= 1 and b - a <= 3))
-            or ((a > b) and (a - b  >= 1 and a - b <= 3))
-            for a, b in zip(report, report[1:])) 
+            ((a < b) and (b - a >= 1 and b - a <= 3))
+            or ((a > b) and (a - b >= 1 and a - b <= 3))
+            for a, b in zip(report, report[1:])
+        )
     return safe
 
 

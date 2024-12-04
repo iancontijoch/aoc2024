@@ -17,8 +17,11 @@ def compute(s: str) -> int:
         left, right = line.split('   ')
         left_lst.append(int(left))
         right_lst.append(int(right))
-    
-    return sum(abs(r - l) for l, r in zip(sorted(left_lst), sorted(right_lst)))
+
+    return sum(
+        abs(right - left)
+        for left, right in zip(sorted(left_lst), sorted(right_lst))
+    )
 
 
 INPUT_S = '''\

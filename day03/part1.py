@@ -15,7 +15,10 @@ def compute(s: str) -> int:
     lines = s.splitlines()
     total = 0
     for line in lines:
-        total += sum(int(a) * int(b) for a, b in re.findall(r'mul\((\d+),(\d+)\)', line))
+        total += sum(
+            int(a) * int(b)
+            for a, b in re.findall(r'mul\((\d+),(\d+)\)', line)
+        )
     return total
 
 

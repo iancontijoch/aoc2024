@@ -4,23 +4,27 @@ import argparse
 import os.path
 
 import pytest
-import math
 
 import support
 
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
-def is_safe(lst) -> bool:
+
+def is_safe(lst: list[int]) -> bool:
     return (
-        all((a < b) and (b - a  in range(1, 4))
+        all(
+            (a < b) and (b - a in range(1, 4))
             for a, b in zip(lst, lst[1:])
-        ) 
-        or 
-        all((a > b) and (a - b in range(1, 4)) 
-            for a, b in zip(lst, lst[1:]))
+        )
+        or
+        all(
+            (a > b) and (a - b in range(1, 4))
+            for a, b in zip(lst, lst[1:])
+        )
     )
 
-def is_fixable(lst) -> bool:
+
+def is_fixable(lst: list[int]) -> bool:
     if is_safe(lst):
         return True
     else:
@@ -28,6 +32,7 @@ def is_fixable(lst) -> bool:
             if is_safe(lst[:i] + lst[i+1:]):
                 return True
     return False
+
 
 def compute(s: str) -> int:
     safe = 0

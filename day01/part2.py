@@ -17,8 +17,8 @@ def compute(s: str) -> int:
         left, right = line.split('   ')
         left_lst.append(int(left))
         right_lst.append(int(right))
-    
-    return sum(l * right_lst.count(l) for l in left_lst)
+
+    return sum(left * right_lst.count(left) for left in left_lst)
 
 
 INPUT_S = '''\
