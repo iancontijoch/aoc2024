@@ -230,6 +230,10 @@ class Direction4(enum.Enum):
     RIGHT = (1, 0)
     DOWN = (0, 1)
     LEFT = (-1, 0)
+    NW = (-1, -1)
+    SW = (-1, 1)
+    SE = (1, 1)
+    NE = (1, -1)
 
     def __init__(self, x: int, y: int) -> None:
         self.x, self.y = x, y
