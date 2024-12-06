@@ -2,8 +2,13 @@ from __future__ import annotations
 
 import argparse
 import os.path
+import re
 
 import pytest
+from z3 import Int
+from z3 import Ints
+from z3 import sat
+from z3 import Solver
 
 import support
 
@@ -25,11 +30,38 @@ def compute(s: str) -> int:
         tuple(map(int, order.split('|')))
         for order in ordering.splitlines()
     )
+    incorrect_lsts = []
 
     for update in updates.splitlines():
         lst = list(map(int, update.split(',')))
-        if check_order(lst, orders):
-            total += lst[len(lst) // 2]
+        if not check_order(lst, orders):
+            incorrect_lsts.append(lst)
+
+    for lst in incorrect_lsts:
+        so = Solver()
+        for x, y in orders:
+            if x in lst and y in lst:
+                ox, oy = Ints(f'o{x} o{y}')
+                so.add(0 <= ox)
+                so.add(ox < oy)
+
+        for elem in lst:
+            e = Int(f'o{elem}')
+            so.add(0 <= e)
+            so.add(e < len(lst))
+
+        if so.check() == sat:
+            m = so.model()
+
+            correct_order = sorted(
+                [
+                    tuple(map(int, m.groups()))
+                    for m in re.finditer(r'o(\d+) = (\d+)', str(m))
+                ],
+                key=lambda x: x[1],
+            )
+            total += [x[0] for x in correct_order][len(lst) // 2]
+
     return total
 
 
@@ -63,7 +95,7 @@ INPUT_S = '''\
 61,13,29
 97,13,75,29,47
 '''
-EXPECTED = 143
+EXPECTED = 123
 
 
 @pytest.mark.parametrize(
