@@ -24,7 +24,7 @@ def compute(s: str) -> int:
         numbers = deque(map(int, rest.split()))
         ops_combo = deque(
             itertools.product(
-                (operator.mul, operator.add),
+                (operator.mul, operator.add, operator.concat),
                 repeat=len(numbers) - 1,
             ),
         )
@@ -39,7 +39,10 @@ def compute(s: str) -> int:
                         seen.add(line)
                     break
                 a, b, op = q.popleft(), q.popleft(), ops.popleft()
-                q.appendleft(op(a, b))
+                if op == operator.concat:
+                    q.appendleft(int(op(str(a), str(b))))
+                else:
+                    q.appendleft(op(a, b))
     return total
 
 
@@ -54,7 +57,7 @@ INPUT_S = '''\
 21037: 9 7 18 13
 292: 11 6 16 20
 '''
-EXPECTED = 3749
+EXPECTED = 11387
 
 
 @pytest.mark.parametrize(
