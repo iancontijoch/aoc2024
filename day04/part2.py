@@ -24,13 +24,13 @@ def check_tile_totals(
 ) -> bool:
 
     nw, se = (
-        support.Direction4.NW.apply(x, y),
-        support.Direction4.SE.apply(x, y),
+        support.Direction8.NW.apply(x, y),
+        support.Direction8.SE.apply(x, y),
     )
 
     sw, ne = (
-        support.Direction4.SW.apply(x, y),
-        support.Direction4.NE.apply(x, y),
+        support.Direction8.SW.apply(x, y),
+        support.Direction8.NE.apply(x, y),
     )
 
     if all(c in coords for c in (nw, se, sw, ne)):
