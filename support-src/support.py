@@ -230,10 +230,6 @@ class Direction4(enum.Enum):
     RIGHT = (1, 0)
     DOWN = (0, 1)
     LEFT = (-1, 0)
-    NW = (-1, -1)
-    SW = (-1, 1)
-    SE = (1, 1)
-    NE = (1, -1)
 
     def __init__(self, x: int, y: int) -> None:
         self.x, self.y = x, y
@@ -260,6 +256,48 @@ class Direction4(enum.Enum):
 
     @property
     def opposite(self) -> Direction4:
+        vals = self._vals
+        return vals[(vals.index(self) + 2) % len(vals)]
+
+    def apply(self, x: int, y: int, *, n: int = 1) -> tuple[int, int]:
+        return self.x * n + x, self.y * n + y
+
+
+class Direction8(enum.Enum):
+    UP = (0, -1)
+    RIGHT = (1, 0)
+    DOWN = (0, 1)
+    LEFT = (-1, 0)
+    NW = (-1, -1)
+    SW = (-1, 1)
+    SE = (1, 1)
+    NE = (1, -1)
+
+    def __init__(self, x: int, y: int) -> None:
+        self.x, self.y = x, y
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, Direction8):
+            return NotImplemented
+        else:
+            return (self.x, self.y) < (other.x, other.y)
+
+    @property
+    def _vals(self) -> tuple[Direction8, ...]:
+        return tuple(type(self).__members__.values())
+
+    @property
+    def cw(self) -> Direction8:
+        vals = self._vals
+        return vals[(vals.index(self) + 1) % len(vals)]
+
+    @property
+    def ccw(self) -> Direction8:
+        vals = self._vals
+        return vals[(vals.index(self) - 1) % len(vals)]
+
+    @property
+    def opposite(self) -> Direction8:
         vals = self._vals
         return vals[(vals.index(self) + 2) % len(vals)]
 

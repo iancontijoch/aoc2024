@@ -14,49 +14,41 @@ def parse_coords(s: str) -> dict[tuple[int, int], str]:
     coords = {}
     for y, line in enumerate(s.splitlines()):
         for x, c in enumerate(line):
-            coords[(x, y)] = c
+            coords[((x, y))] = c
     return coords
 
 
-def check_tile_totals(
-    x: int, y: int,
-    coords: dict[tuple[int, int], str],
-) -> int:
-    total = 0
-    for d in support.Direction8:
-        tiles = ''
-        for n in range(4):
-            cand = d.apply(x, y, n=n)
-            if cand not in coords:
-                break
-            tiles += coords[cand]
-        if tiles == 'XMAS':
-            total += 1
-    return total
-
-
 def compute(s: str) -> int:
-    total = 0
     coords = parse_coords(s)
-    for coord in coords:
-        if coords[coord] == 'X':
-            total += check_tile_totals(*coord, coords)
-    return total
+    pos = [k for k, v in coords.items() if v == '^'][0]
+    visited = set()
+    dir = support.Direction4.UP
+
+    while True:
+        visited.add(pos)
+        next_pos = dir.apply(*pos)
+        if next_pos not in coords:
+            break
+        elif coords[next_pos] == '#':
+            dir = dir.cw
+        else:
+            pos = next_pos
+    return len(visited)
 
 
 INPUT_S = '''\
-MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX
+....#.....
+.........#
+..........
+..#.......
+.......#..
+..........
+.#..^.....
+........#.
+#.........
+......#...
 '''
-EXPECTED = 18
+EXPECTED = 41
 
 
 @pytest.mark.parametrize(
