@@ -87,10 +87,3 @@ def main() -> int:
 
 if __name__ == '__main__':
     raise SystemExit(main())
-
-
-(4, 3)
-(5, 5)
-(-1, -2)
-
-(3, 1)
