@@ -14,31 +14,29 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def parse_coords(s: str) -> dict[tuple[int, int], str]:
-    coords = {}
-    for y, line in enumerate(s.splitlines()):
-        for x, c in enumerate(line):
-            coords[(x, y)] = c
-    return coords
+    return {
+        (x, y): c
+        for y, line in enumerate(s.splitlines())
+        for x, c in enumerate(line)
+    }
 
 
 def compute(s: str) -> int:
-    antenna_chars = tuple({c for c in s if c not in ('.', '\n')})
+    antenna_chars = {c for c in s if c not in ('.', '\n')}
     antinodes = set()
     coords = parse_coords(s)
 
     for char in antenna_chars:
         locs = [pos for pos, c in coords.items() if c == char]
-        for a, b in itertools.product(locs, locs):
-            if a != b:
-                diff = tuple(map(sub, b, a))
-                anti1, anti2 = (
-                    tuple(map(sub, a, diff)),
-                    tuple(map(add, b, diff)),
-                )
-                if anti1 in coords:
-                    antinodes.add(anti1)
-                if anti2 in coords:
-                    antinodes.add(anti2)
+        for a, b in itertools.product(locs, repeat=2):
+            if a == b:
+                continue
+            diff = tuple(map(sub, b, a))
+            anti1, anti2 = (
+                tuple(map(sub, a, diff)),
+                tuple(map(add, b, diff)),
+            )
+            antinodes.update({anti1, anti2} & coords.keys())
 
     return len(antinodes)
 

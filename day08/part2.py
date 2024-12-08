@@ -13,15 +13,15 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def parse_coords(s: str) -> dict[tuple[int, int], str]:
-    coords = {}
-    for y, line in enumerate(s.splitlines()):
-        for x, c in enumerate(line):
-            coords[(x, y)] = c
-    return coords
+    return {
+        (x, y): c
+        for y, line in enumerate(s.splitlines())
+        for x, c in enumerate(line)
+    }
 
 
 def compute(s: str) -> int:
-    antenna_chars = tuple({c for c in s if c not in ('.', '\n')})
+    antenna_chars = {c for c in s if c not in {'.', '\n'}}
     antinodes = set()
     coords = parse_coords(s)
 
@@ -31,19 +31,19 @@ def compute(s: str) -> int:
 
         # 3+ antennas will always be in line with 2 others
         if len(locs) > 2:
-            for loc in locs:
-                antinodes.add(loc)
+            antinodes.update(locs)
 
-        for a, b in itertools.product(locs, locs):
-            if a != b:
-                diff = tuple(map(operator.sub, b, a))
+        for a, b in itertools.product(locs, repeat=2):
+            if a == b:
+                continue
 
-                # move backwards then forwards until off grid
-                for pos, op in ((a, operator.sub), (b, operator.add)):
-                    cand = tuple(map(op, pos, diff))
-                    while cand in coords:
-                        antinodes.add(cand)
-                        cand = tuple(map(op, cand, diff))
+            diff = tuple(map(operator.sub, b, a))
+            # move backwards then forwards until off grid
+            for pos, op in ((a, operator.sub), (b, operator.add)):
+                cand = tuple(map(op, pos, diff))
+                while cand in coords:
+                    antinodes.add(cand)
+                    cand = tuple(map(op, cand, diff))
     return len(antinodes)
 
 
