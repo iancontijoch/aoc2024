@@ -15,7 +15,6 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 def compute(s: str) -> int:
     lines = s.splitlines()
-    seen = set()
     total = 0
 
     for line in lines:
@@ -29,14 +28,15 @@ def compute(s: str) -> int:
             ),
         )
 
-        while ops_combo:
+        found = False
+        while ops_combo and not found:
             q = numbers.copy()
             ops = deque(ops_combo.popleft())
             while q:
                 if len(q) == 1:
-                    if q.popleft() == test_value and line not in seen:
+                    if q.popleft() == test_value:
                         total += test_value
-                        seen.add(line)
+                        found = True
                 else:
                     a, b, op = q.popleft(), q.popleft(), ops.popleft()
                     if op == operator.concat:
