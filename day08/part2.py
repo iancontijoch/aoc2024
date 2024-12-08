@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import argparse
 import itertools
+import operator
 import os.path
-from operator import add
-from operator import sub
 
 import pytest
 
@@ -37,18 +36,14 @@ def compute(s: str) -> int:
 
         for a, b in itertools.product(locs, locs):
             if a != b:
-                diff = tuple(map(sub, b, a))
-                # move backwards until off grid
-                cand_back = tuple(map(sub, a, diff))
-                while cand_back in coords:
-                    antinodes.add(cand_back)
-                    cand_back = tuple(map(sub, cand_back, diff))
+                diff = tuple(map(operator.sub, b, a))
 
-                # move forwards until off grid
-                cand_forward = tuple(map(add, b, diff))
-                while cand_forward in coords:
-                    antinodes.add(cand_forward)
-                    cand_forward = tuple(map(add, cand_forward, diff))
+                # move backwards then forwards until off grid
+                for pos, op in ((a, operator.sub), (b, operator.add)):
+                    cand = tuple(map(op, pos, diff))
+                    while cand in coords:
+                        antinodes.add(cand)
+                        cand = tuple(map(op, cand, diff))
     return len(antinodes)
 
 
