@@ -3,8 +3,9 @@ from __future__ import annotations
 import argparse
 import itertools
 import os.path
+from operator import add
+from operator import sub
 
-import numpy as np
 import pytest
 
 import support
@@ -36,21 +37,18 @@ def compute(s: str) -> int:
 
         for a, b in itertools.product(locs, locs):
             if a != b:
-                np_a, np_b = np.array(a), np.array(b)
-                diff = np_b - np_a
+                diff = tuple(map(sub, b, a))
                 # move backwards until off grid
-                cand_back = tuple((np_a - diff).tolist())
+                cand_back = tuple(map(sub, a, diff))
                 while cand_back in coords:
                     antinodes.add(cand_back)
-                    cand_back = tuple((np.array(cand_back) - diff).tolist())
+                    cand_back = tuple(map(sub, cand_back, diff))
 
                 # move forwards until off grid
-                cand_forward = tuple((np_b + diff).tolist())
+                cand_forward = tuple(map(add, b, diff))
                 while cand_forward in coords:
                     antinodes.add(cand_forward)
-                    cand_forward = tuple(
-                        (np.array(cand_forward) + diff).tolist(),
-                    )
+                    cand_forward = tuple(map(add, cand_forward, diff))
     return len(antinodes)
 
 

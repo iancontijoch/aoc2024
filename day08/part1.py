@@ -3,8 +3,9 @@ from __future__ import annotations
 import argparse
 import itertools
 import os.path
+from operator import add
+from operator import sub
 
-import numpy as np
 import pytest
 
 import support
@@ -29,11 +30,11 @@ def compute(s: str) -> int:
         locs = [pos for pos, c in coords.items() if c == char]
         for a, b in itertools.product(locs, locs):
             if a != b:
-                np_a, np_b = np.array(a), np.array(b)
-                diff = np_b - np_a
-                anti1, anti2 = tuple(
-                    (np_a - diff).tolist(),
-                ), tuple((np_b + diff).tolist())
+                diff = tuple(map(sub, b, a))
+                anti1, anti2 = (
+                    tuple(map(sub, a, diff)),
+                    tuple(map(add, b, diff)),
+                )
                 if anti1 in coords:
                     antinodes.add(anti1)
                 if anti2 in coords:
