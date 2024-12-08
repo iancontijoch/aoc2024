@@ -37,12 +37,12 @@ def compute(s: str) -> int:
                     if q.popleft() == test_value and line not in seen:
                         total += test_value
                         seen.add(line)
-                    break
-                a, b, op = q.popleft(), q.popleft(), ops.popleft()
-                if op == operator.concat:
-                    q.appendleft(int(op(str(a), str(b))))
                 else:
-                    q.appendleft(op(a, b))
+                    a, b, op = q.popleft(), q.popleft(), ops.popleft()
+                    if op == operator.concat:
+                        q.appendleft(int(op(str(a), str(b))))
+                    else:
+                        q.appendleft(op(a, b))
     return total
 
 

@@ -37,9 +37,9 @@ def compute(s: str) -> int:
                     if q.popleft() == test_value and line not in seen:
                         total += test_value
                         seen.add(line)
-                    break
-                a, b, op = q.popleft(), q.popleft(), ops.popleft()
-                q.appendleft(op(a, b))
+                else:
+                    a, b, op = q.popleft(), q.popleft(), ops.popleft()
+                    q.appendleft(op(a, b))
     return total
 
 
