@@ -71,8 +71,8 @@ def compute(s: str) -> int:
                 ):
                     raise ValueError
 
-                # space_block = cast(Space, space_block)
                 state_space_block = cast(Space, state[space_block.index])
+
                 if (
                     space_block.index < file_block.index
                     and space_block.free_space >= file_block.length
