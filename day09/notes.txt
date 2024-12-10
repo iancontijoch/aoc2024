@@ -1,0 +1,16 @@
+==Part1==
+
+answer: 88568111889
+That's not the right answer; your answer is too low.
+
+
+==Part2==
+
+answer: 94970376570
+That's not the right answer; your answer is too low.
+
+answer: 9343657383344
+That's not the right answer; your answer is too high.
+
+answer: 6239783302560
+That's the right answer!
