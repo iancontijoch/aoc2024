@@ -12,7 +12,7 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 @functools.cache
-def change(c: str, blinks: int) -> str:
+def change(c: str, blinks: int) -> int:
     if blinks == 0:
         return len([c])
     if c == '0':

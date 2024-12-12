@@ -29,7 +29,8 @@ def blink(numeric_lst: list[str]) -> list[str]:
 
 
 def compute(s: str) -> int:
-    numeric_lst, lst = [c for c in s.split()], []
+    numeric_lst = [c for c in s.split()]
+    lst: list[str] = []
     for _ in range(BLINKS):
         if not lst:
             lst = blink(numeric_lst)
