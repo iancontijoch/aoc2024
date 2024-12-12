@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import argparse
 import os.path
+from collections import deque
 
 import pytest
-from collections import deque
 
 import support
 
@@ -20,8 +20,8 @@ def blink(numeric_lst: list[str]) -> list[str]:
             lst.append('1')
         elif (digit_len := len(c)) % 2 == 0:
             lst.extend([
-                c[:digit_len // 2], 
-                str(int(c[digit_len // 2 :]))
+                c[:digit_len // 2],
+                str(int(c[digit_len // 2:])),
             ])
         else:
             lst.append(str(int(c) * 2024))
@@ -36,6 +36,7 @@ def compute(s: str) -> int:
         else:
             lst = blink(lst)
     return len(lst)
+
 
 INPUT_S = '''\
 125 17

@@ -21,9 +21,11 @@ class Block():
         self.erased: bool = False
 
     def __repr__(self) -> str:
-        return (f'{self.__class__.__name__}(value=\'{self.value}\','
-                f'index={self.index}, length={self.length},'
-                f' erased={self.erased})')
+        return (
+            f'{self.__class__.__name__}(value=\'{self.value}\','
+            f'index={self.index}, length={self.length},'
+            f' erased={self.erased})'
+        )
 
 
 class Space(Block):
