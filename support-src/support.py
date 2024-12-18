@@ -175,6 +175,14 @@ def parse_point_comma(s: str) -> tuple[int, int]:
     return int(a_s), int(b_s)
 
 
+def parse_coords(s: str) -> dict[tuple[int, int], str]:
+    return {
+        (x, y): c
+        for y, line in enumerate(s.splitlines())
+        for x, c in enumerate(line)
+    }
+
+
 def parse_coords_int(s: str) -> dict[tuple[int, int], int]:
     coords = {}
     for y, line in enumerate(s.splitlines()):
