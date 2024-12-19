@@ -1,0 +1,24 @@
+Register A: 1012
+
+
+Program:
+0,1,5,4,3,0
+
+== Opcode, Operand, Pointer ==
+(0, 1, 0)
+
+Combo = 1
+
+== Opcode, Operand, Pointer ==
+(5, 4, 2)
+
+Combo = A
+
+
+
+== Part 2 ==
+Answer: 24000000
+That's not the right answer; your answer is too low.
+
+Answer: 100800000
+That's not the right answer; your answer is too low.
