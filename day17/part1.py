@@ -81,7 +81,7 @@ def compute(s: str) -> str:
     _, rest = program_s.split(': ')
     program = tuple(int(c) for c in rest.split(','))
 
-    output = get_program_output(program, registers)
+    output, registers = get_program_output(program, registers)
     return ','.join(map(str, output))
 
 
