@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import os.path
-import re
 
 import pytest
 
@@ -11,88 +10,32 @@ import support
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
-def do(
-        program: tuple[int, ...],
-        registers: dict[str, int],
-        combo: dict[int, int],
-        pointer: int,
-) -> tuple[list[int], dict[str, int], dict[int, int], int]:
-
-    increase_pointer = True
+def do(registers: tuple[int, int, int]) -> list[int]:
+    A, B, C = registers
     output = []
-    opcode = program[pointer]
-    operand = program[pointer + 1]
+    while A != 0:
+        B = (A % 8) ^ 1
+        C = A // (2 ** B)
+        B = (B ^ 5) ^ C
+        A = A // 8
 
-    if opcode == 0:
-        registers['A'] = registers['A'] // (2 ** combo[operand])
-    elif opcode == 1:
-        registers['B'] = registers['B'] ^ operand
-    elif opcode == 2:
-        registers['B'] = combo[operand] % 8
-    elif opcode == 3:
-        if registers['A'] != 0:
-            pointer = operand
-            increase_pointer = False
-    elif opcode == 4:
-        registers['B'] = registers['B'] ^ registers['C']
-    elif opcode == 5:
-        output.append(combo[operand] % 8)
-    elif opcode == 6:
-        registers['B'] = registers['A'] // (2 ** combo[operand])
-    elif opcode == 7:
-        registers['C'] = registers['A'] // (2 ** combo[operand])
-    else:
-        raise ValueError('Did not recognize instruction')
-
-    combo = get_combo(registers)
-    return output, registers, combo, pointer + (increase_pointer * 2)
-
-
-def get_combo(registers: dict[str, int]) -> dict[int, int]:
-    return {
-        0: 0,
-        1: 1,
-        2: 2,
-        3: 3,
-        4: registers['A'],
-        5: registers['B'],
-        6: registers['C'],
-    }
-
-
-def get_program_output(
-    program: tuple[int, ...],
-    registers: dict[str, int],
-) -> tuple[list[int], dict[str, int]]:
-    pointer = 0
-    outputs = []
-    combo = get_combo(registers)
-    while pointer < len(program):
-        output, registers, combo, pointer = do(
-            program, registers, combo, pointer,
-        )
-        outputs.extend(output)
-    return outputs, registers
+        output.append(B % 8)
+    # print(f'{A=}, {B=}, {C=}, output={output}')
+    return output
 
 
 def compute(s: str) -> int:
-    registers_s, program_s = s.split('\n\n')
-    registers = dict(zip('ABC', map(int, re.findall(r'\d+', registers_s))))
+    _, program_s = s.split('\n\n')
     _, rest = program_s.split(': ')
     program = tuple(int(c) for c in rest.split(','))
-    A = 0
-    i = 0
+    a = 164541017976449  # start after trying 8 ** 15
 
-    while True:
-        if i % 100_000 == 0:
-            print(A, i)
-        output, registers = get_program_output(program, registers)
+    while a <= 8 ** 16:
+        output = do((a, 0, 0))
         if output == list(program):
             break
-        A += 8
-        registers['A'] = A
-        i += 1
-    return A
+        a += 1
+    return a
 
 
 INPUT_S = '''\
