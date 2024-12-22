@@ -1,0 +1,15 @@
+== Part 1 ==
+answer: 362
+That's not the right answer; your answer is too high.
+
+answer: 360
+That's the right answer!
+
+
+== Part 2 ==
+
+answer: 338458612712830
+That's not the right answer; your answer is too low.
+
+answer: 577474410989846
+That's the right answer!
