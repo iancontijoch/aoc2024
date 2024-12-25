@@ -270,6 +270,22 @@ class Direction4(enum.Enum):
     def apply(self, x: int, y: int, *, n: int = 1) -> tuple[int, int]:
         return self.x * n + x, self.y * n + y
 
+    def as_c(self) -> str:
+        return _DIRECTION4_C_REV[self]
+
+    @staticmethod
+    def from_c(c: str) -> Direction4:
+        return _DIRECTION4_C[c]
+
+
+_DIRECTION4_C = {
+    '<': Direction4.LEFT,
+    '>': Direction4.RIGHT,
+    '^': Direction4.UP,
+    'v': Direction4.DOWN,
+}
+_DIRECTION4_C_REV = {v: k for k, v in _DIRECTION4_C.items()}
+
 
 class Direction8(enum.Enum):
     UP = (0, -1)
