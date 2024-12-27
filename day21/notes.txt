@@ -1,2 +1,8 @@
 answer: 132532
 That's the right answer!
+
+== Part 2 ==
+answer: 1379
+That's not the right answer; your answer is too low.
+
+36: That's not the right answer
