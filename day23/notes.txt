@@ -1,0 +1,11 @@
+== Part1 ==
+
+> 2736 ms
+answer: 2106
+That's not the right answer; your answer is too high.
+
+> 2807 ms
+answer: 893
+That's the right answer!
+
+== Part 2 ==
