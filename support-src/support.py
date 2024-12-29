@@ -229,8 +229,20 @@ def format_coords_hash(coords: set[tuple[int, int]]) -> str:
     )
 
 
+def format_coords(coords: dict[tuple[int, int], str]) -> str:
+    bx, by = bounds(coords)
+    return '\n'.join(
+        ''.join(coords[(x, y)] if (x, y) in coords else ' ' for x in bx.range)
+        for y in by.range
+    )
+
+
 def print_coords_hash(coords: set[tuple[int, int]]) -> None:
     print(format_coords_hash(coords))
+
+
+def print_coords(coords: dict[tuple[int, int], str]) -> None:
+    print(format_coords(coords))
 
 
 class Direction4(enum.Enum):
